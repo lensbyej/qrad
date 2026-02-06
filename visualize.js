@@ -655,6 +655,11 @@ async function exportTimeEvolutionGif() {
     const gifWidth = Math.max(100, Math.floor(heatmapCanvas.width));
     const gifHeight = Math.max(100, Math.floor(heatmapCanvas.height));
 
+    // Progress UI elements: declare early so error paths can safely reference them
+    const progressDiv = document.getElementById('gifProgress');
+    const progressText = document.getElementById('gifProgressText');
+    const progressBar = document.getElementById('gifProgressBar');
+
     // Robust worker script loading: try local worker first (create blob URL), then CDN fallback.
     let workerScriptUrl = 'gif.worker.js';
     let blobUrlToRevoke = null;
@@ -747,10 +752,7 @@ async function exportTimeEvolutionGif() {
         }
     }
 
-    const progressDiv = document.getElementById('gifProgress');
-    const progressText = document.getElementById('gifProgressText');
-    const progressBar = document.getElementById('gifProgressBar');
-    progressDiv.style.display = 'block';
+    if (progressDiv) progressDiv.style.display = 'block';
 
     // Pause animation if playing
     const wasPlaying = isPlaying;
